@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="operatorRegistration.css">
+    <title>BUS Operator Registration</title>
+</head>
+<body>
+    <div class="container">
+         <!-- Logo Section -->
+         <div class="logo">
+            <img src="bus (1).png" alt="Chat Logo" class="logo-img">
+        </div>
+        <h2>BUS Operator Registration</h2>
+
+        <form id="registrationForm" method="post" action="/api/operators/register"  enctype="multipart/form-data">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter Full Name" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Enter Email Address" required>
+            <span class="error-message" id="emailError"></span>
+
+            <label for="mobileNo">Mobile No:</label>
+            <input type="text" id="mobileNo" name="mobileNo" placeholder="Enter Mobile No" required>
+            <span class="error-message" id="mobileError"></span>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="**********" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="**********" required>
+            <span class="error-message" id="passwordError"></span>
+
+            <label for="vehicleRegistrationNumber">Vehicle Registration Number:</label>
+            <input type="text" id="vehicleRegistrationNumber" name="vehicleRegistrationNumber" placeholder="AA##AA####" required>
+
+            <label for="city">City:</label>
+            <select id="city" name="city" required>
+                <option value="" disabled selected>Select your city</option>
+                <option value="Pune">Pune</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Bangalore">Bangalore</option>
+            </select>
+
+            <label for="drivingLicenceFile">Driving Licence:</label>
+            <div class="upload-section">
+                <input type="text" id="DrivingLicence\" name="drivinglicenceNo" placeholder="Enter Driving Licence Number" required>
+                <button type="button" id="licenceUploadButton">Upload Driving Licence</button>
+                <input type="file" id="drivingLicenceFile" name="drivingLicenceFile" style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+                <span class="file-name" id="licenceFileName"></span>
+                <span class="error-message" id="licenceError"></span>
+            </div>
+
+            <div class="terms-section">
+                <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
+                <label for="termsAndConditions">I accept all Terms & Conditions.</label>
+            </div>
+
+           	<div class="form-actions">
+                <button type="submit" class="signup-btn">Sign Up</button>
+                <a href="../operatorLogin/operatorlogin.html" class="login-btn">Log In</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+    // ✅ Fix: Trigger file selection when clicking "Upload Driving Licence" button
+    document.getElementById('licenceUploadButton').addEventListener('click', function () {
+        document.getElementById('drivingLicenceFile').click(); // Open file selection
+    });
+
+    // ✅ Fix: Display selected file name
+    document.getElementById('drivingLicenceFile').addEventListener('change', function () {
+        const file = this.files[0]; // Get the selected file
+        if (file) {
+            document.getElementById('licenceFileName').textContent = "Selected: " + file.name;
+        } else {
+            document.getElementById('licenceFileName').textContent = ''; // Clear if no file selected
+        }
+    });
+
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        let valid = true;
+
+        // ✅ Clear previous error messages
+        document.querySelectorAll('.error-message').forEach(msg => msg.textContent = '');
+
+        // ✅ Validate Password Match
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (password !== confirmPassword) {
+            document.getElementById('passwordError').textContent = 'Password and Confirm Password do not match.';
+            valid = false;
+        }
+
+        // ✅ Validate Mobile Number
+        const mobileNo = document.getElementById('mobileNo').value;
+        const mobilePattern = /^[6-9]\d{9}$/;
+        if (!mobilePattern.test(mobileNo)) {
+            document.getElementById('mobileError').textContent = 'Please enter a valid 10-digit mobile number.';
+            valid = false;
+        }
+
+        // ✅ Validate File Upload
+        const licenceFile = document.getElementById('drivingLicenceFile').files;
+        if (licenceFile.length === 0) {
+            document.getElementById('licenceError').textContent = 'Please upload your Driving Licence.';
+            valid = false;
+        }
+
+        if (!valid) {
+            return;
+        }
+
+        alert('Registration Successful!');
+        this.submit(); // ✅ Submit the form if validation passes
+    });
+</script>
+    
+</body>
+</html>

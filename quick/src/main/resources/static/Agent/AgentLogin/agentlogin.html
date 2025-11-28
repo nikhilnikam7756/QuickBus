@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="agentlogin.css">
+    <title>Agent Login</title>
+</head>
+<body>
+    
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo">
+            <img src="chat.png" alt="Chat Logo" class="logo-img">
+        </div>
+
+        <h2>Agent Login</h2>
+
+        <form id="loginForm" action="http://localhost:8082/api/agents/login" method="post">
+            <!-- Email Input -->
+            <input type="text" name="emailOrMobile" placeholder="Enter Email or Mobile" required>
+
+            <!-- Password Input -->
+            <input type="password" id="password" name="password" placeholder="Enter Password" required>
+
+            <!-- Forgot Password -->
+			<a href="#" class="forgot-password">Forgot Password?</a>            
+
+            <!-- Login and Sign Up Buttons -->
+            
+                <button type="submit" class="login-btn">Log In</button>
+            
+        </form>
+
+        <!-- "Don't have an account?" Section -->
+        <div class="signup-container">
+            Don't have an account? <a href="/Agent/agentRegistration/agentRegistration.html" class="signup-link">Sign Up</a>
+        </div>
+    </div>
+</body>
+</html>

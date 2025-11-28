@@ -1,0 +1,307 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: rgb(129, 130, 130);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background: #ffffff;
+    background-size: cover;
+}
+
+.head {
+    position: sticky; /* Keeps the header at the top while scrolling */
+    top: 0; /* Sticks to the top of the viewport */
+    z-index: 1000; /* Ensures the header stays above other elements */
+    background: rgb(255, 255, 255);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    opacity: 92%;
+}
+
+/* Updated Logo CSS */
+.hlogo img {
+    width: auto; /* Maintains aspect ratio */
+    height: 120px; /* Adjust based on your header height */
+    max-width: 300px; /* Ensures the logo doesn't become too wide */
+    margin: 0 auto; /* Centers the logo */
+    display: block; /* Ensures proper alignment */
+    object-fit: contain; /* Keeps the logo's aspect ratio intact */
+    transition: transform 0.3s ease; /* Add smooth hover effect */
+}
+
+.hlogo img:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    font-style: italic;
+}
+
+.logo a {
+    text-decoration: none;
+    color: #eeeeee;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.4s ease;
+}
+
+.logo a:hover {
+    color: #fff8f8;
+    font-weight: bold;
+}
+
+.top {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-links {
+    font-weight: bold;
+    font-size: 18px;
+    align-items: center;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000000;
+    padding: 5px;
+    transition: color 0.3s ease; 
+}
+
+.nav-links.centered {
+    justify-content: center;
+    align-items: center; 
+    position: relative;
+}
+
+.nav-links.right {
+    justify-content: right;
+    align-items: right; 
+}
+
+.nav-links a:hover {
+    color: #5595fc; 
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    background-color: #ececec;
+    box-shadow: 0 4px 8px rgba(199, 199, 199, 0.1);
+    list-style: none;
+    padding: 10px 0;
+    border-radius: 15px;
+    width: 200px;
+    z-index: 10;
+    transform-origin: top left;
+}
+
+.nav-links li:hover .dropdown {
+    display: block;
+}
+
+.dropdown li {
+    padding: 10px;
+}
+
+.dropdown li a {
+    color: #000000;
+    text-decoration: none;
+    border-radius: 0px;
+    display: block;
+    transition: all 0.5s ease;
+}
+
+.dropdown li a:hover {
+    background-color: #e7f2fa;
+    color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.8);
+    border-radius: 15px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links li:last-child .dropdown {
+    left: auto;
+    right: 0;
+}
+.dropdown2 {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left:-150px;
+    background-color: #ececec;
+    box-shadow: 0 4px 8px rgba(199, 199, 199, 0.1);
+    list-style: none;
+    padding: 10px 0;
+    border-radius: 15px;
+    width: 200px;
+    z-index: 10;
+    transform-origin: top left;
+}
+
+.nav-links li:hover .dropdown2 {
+    display: block;
+}
+
+.dropdown2 li {
+    padding: 10px;
+}
+
+.dropdown2 li a {
+    color: #000000;
+    text-decoration: none;
+    border-radius: 0px;
+    display: block;
+    transition: all 0.5s ease;
+}
+
+.dropdown2 li a:hover {
+    background-color: #e7f2fa;
+    color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.8);
+    border-radius: 15px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links li:last-child .dropdown2 {
+    left: auto;
+    right: 0;
+}
+
+
+.faq {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 20px 0;
+    color: #000000;
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-bottom: 20px;
+}
+h1, h2 {
+    color: #000000;
+    margin: 0;
+    padding: 0;
+}
+.steps {
+    align-items: center;
+    text-align: center;
+    background-color: lightgrey;
+    border-radius: 5px;
+    padding: 50px;
+}
+.steps h2 {
+    margin-bottom: 20px;
+    color: #000000;
+}
+.steps .step-container {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+}
+.steps .step {
+    flex: 1;
+    margin: 0 10px;
+}
+.steps img {
+    max-width: 60px;
+    margin-bottom: 10px;
+}
+.steps h3 {
+    margin: 5px 0;
+    font-size: 1.1em;
+    color: #000000;
+}
+.steps p {
+    font-size: 0.9em;
+    color: #000000;
+}
+.icon-circle {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    background-color: white;
+    border-radius: 50px;
+}
+.logo {
+    font-size: 35px;
+    color: #92cfea;
+}
+a {
+    color: black;
+}
+.highlight {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* <fAQ> */
+/* .accordion {
+    background-color: #f1f1f1;
+    color: #000;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.active, .accordion:hover {
+    background-color: #ddd;
+}
+.panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+    border-left: 3px solid #92cfea;
+    margin-bottom: 10px;
+}
+ 

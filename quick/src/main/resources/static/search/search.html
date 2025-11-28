@@ -1,0 +1,173 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBus Search Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="homecss/header.css"> 
+    <link rel="stylesheet" href="searchcss/search.css">
+    
+</head>
+
+<body>
+    <header class="head">
+        <div class="hlogo"><a href="index.html">
+                <img src="Log3.png" alt="QuickBus Logo">
+            </a></div>
+        <nav class="top">
+            <ul class="nav-links centered">
+                <li><a href="#">Buses <i class="fas fa-bus-alt"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Sleeper</a></li>
+                        <li><a href="#">Non Sleeper</a></li>
+                        <li><a href="#">AC bus</a></li>
+                        <li><a href="#">Non AC bus</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Tickets <i class="fas fa-ticket-alt"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="ticket_details.html">Show my ticket</a></li>
+                        <li><a href="#">Change Travel Date </a></li>
+                        <li><a href="#">Cancle Tickest</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Trips <i class="fas fa-road icon"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Trip form Pune</a></li>
+                        <li><a href="#">Trip form Mumbai</a></li>
+                        <li><a href="#">Trip form Delhi</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Vehical <i class="fas fa-car icon"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="#">Van</a></li>
+                        <li><a href="#">Mini bus</a></li>
+                        <li><a href="#">Regular bus</a></li>
+                        <li><a href="#">Double Deaker</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Offer <i class="fas fa-gift icon"></i>
+                <li><a href="#">Download <i class="fas fa-download icon"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="https://play.google.com/store/games?device=windows">Play Store</a></li>
+                        <li><a href="#">App Store</a></li>
+                        <li><a href="#">For Windows</a></li>
+                    </ul>
+                </li>
+                </li>
+                <li><a href="#"><i class="fas fa-search icon"></i></a></li>
+            </ul>
+        </nav>
+        <ul class="nav-links centered">
+            <li><a href="#"><i class="fas fa-user icon"></i></a>
+                <ul class="dropdown2">
+                    <li><a href="login.html">User Login</a></li>
+                    <li><a href="#">Operator login</a></li>
+                    <li><a href="#">Deploper Login</a></li>
+                </ul>
+            </li>
+            <li><a href="#"><i class="fas fa-headset icon"></i></a></li>
+        </ul>
+    </header>
+
+
+    <div class="main-container">
+        <!-- Filter Menu -->
+        <div class="filter-menu">
+            <div class="search-container">
+                <input type="text" placeholder="Search" class="search-input">
+                <button class="search-button"><i class="fas fa-search"></i></button>
+            </div>
+
+            <h3><i class="fas fa-filter"></i> Filter Options</h3>
+
+            <div class="filter-category">
+                <br> <label for="departure-time"><i class="fas fa-sun"></i> Departure Time</label><br>
+                <select id="departure-time">
+                    <option value="morning">Morning (6 AM - 12 PM)</option>
+                    <option value="afternoon">Afternoon (12 PM - 6 PM)</option>
+                    <option value="evening">Evening (6 PM - 12 AM)</option>
+                    <option value="night">Night (12 AM - 6 AM)</option>
+                </select>
+
+                <label for="bus-type"><i class="fas fa-bus"></i> Bus Type</label><br>
+                <select id="bus-type">
+                    <option value="ac">AC</option>
+                    <option value="non-ac">Non-AC</option>
+                    <option value="sleeper">Sleeper</option>
+                    <option value="seater">Seater</option>
+                </select><br>
+
+                <label for="seat-availability"><i class="fas fa-chair"></i> Seat Availability</label><br>
+                <select id="seat-availability">
+                    <option value="available">Available</option>
+                    <option value="few">Few Seats Left</option>
+                    <option value="booked">Booked</option>
+                </select><br>
+
+                <label for="price-range"><i class="fas fa-dollar-sign"></i> Price Range</label><br>
+                <input type="range" id="price-range" min="0" max="1000" step="50"><br>
+                <span id="price-value">0 - 1000</span><br>
+
+                <label for="boarding-point"><i class="fas fa-location-arrow"></i> Boarding Point</label><br>
+                <select id="boarding-point">
+                    <option value="city-center">City Center</option>
+                    <option value="bus-station">Bus Station</option>
+                    <option value="airport">Airport</option>
+                </select><br>
+
+                <label for="dropping-point"><i class="fas fa-map-marker-alt"></i> Dropping Point</label><br>
+                <select id="dropping-point">
+                    <option value="city-center">City Center</option>
+                    <option value="railway-station">Railway Station</option>
+                    <option value="suburbs">Suburbs</option>
+                </select><br>
+
+                <label for="operator"><i class="fas fa-users"></i> Operator</label><br>
+                <select id="operator">
+                    <option value="redbus">RedBus</option>
+                    <option value="goibibo">Goibibo</option>
+                    <option value="local">Local Operator</option>
+                </select><br>
+
+                <label for="amenities"><i class="fas fa-cogs"></i> Amenities</label><br>
+                <select id="amenities">
+                    <option value="wifi">Wi-Fi</option>
+                    <option value="charging">Charging Point</option>
+                    <option value="blanket">Blanket</option>
+                    <option value="water">Water Bottle</option>
+                </select><br>
+            </div>
+
+            <button class="apply-filters">Apply Filters</button>
+        </div>
+        
+        
+        <!-- Search Results Table -->
+        <div class="table-container">
+            <h2>Search Results</h2>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Buses</th>
+                        <th>Departure</th>
+                        <th>Duration</th>
+                        <th>Arrival</th>
+                        <th>Rating</th>
+                        <th>Fare</th>
+                        <th>Seats Available</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

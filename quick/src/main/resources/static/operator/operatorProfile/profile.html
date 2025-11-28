@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            position: relative;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            cursor: pointer;
+        }
+
+        .sidebar ul li:hover {
+            background: #ddd;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: none;
+        }
+
+        .profile-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .profile-box input:disabled {
+            background: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .save-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+        
+
+        .upload-btn {
+            background: #28a745;
+            /* Green color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .upload-btn:hover {
+            background: #218838;
+            /* Darker green for hover effect */
+        }
+
+        .profile-box input:disabled {
+            background: #e9ecef;
+            cursor: not-allowed;
+        }
+    </style>
+    <script>
+    function previewImage(event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('profileImg');
+            output.src = reader.result; // show local preview
+            output.style.display = 'block';
+            document.getElementById('uploadText').style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+        
+        // After preview, upload the photo
+        uploadPhoto(file);
+    }
+
+    function uploadPhoto(file) {
+        var formData = new FormData();
+        formData.append("photoFile", file);
+
+        // Replace with actual operator ID after login (here hardcoded as 1 for demonstration)
+        var operatorId = 1;
+
+        fetch(`/api/operators/${operatorId}/upload-photo`, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Upload failed with status " + response.status);
+            }
+            return response.text(); // expecting the file path or URL as response
+        })
+        .then(photoPath => {
+            console.log("Photo uploaded successfully. File path:", photoPath);
+            // Optionally, update the image source to the served file URL
+            // If using the GET endpoint, extract the filename from photoPath and construct URL:
+            // e.g., var filename = photoPath.split('/').pop();
+            // document.getElementById('profileImg').src = `/api/operators/uploads/${filename}`;
+        })
+        .catch(error => {
+            console.error("Error uploading photo:", error);
+        });
+    }
+
+
+    function showSection(sectionId) {
+        document.querySelectorAll('.content').forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById(sectionId).style.display = 'block';
+    }
+
+    function enableEditing(sectionId) {
+        document.querySelectorAll(`#${sectionId} input`).forEach(input => {
+            input.disabled = false;
+        });
+    }
+
+    function disableEditing(sectionId) {
+        document.querySelectorAll(`#${sectionId} input`).forEach(input => {
+            input.disabled = true;
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        showSection('profileSection');
+    });
+
+        // Ensure all inputs in vehicleSection are initially disabled
+        document.addEventListener("DOMContentLoaded", function () {
+            disableEditing('vehicleSection');
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("vehicleForm");
+
+            function validateForm(event) {
+                const requiredFields = document.querySelectorAll("input[required]");
+                let isValid = true;
+
+                requiredFields.forEach((field) => {
+                    if (!field.value.trim()) {
+                        field.style.border = "2px solid red";
+                        isValid = false;
+                    } else {
+                        field.style.border = "";
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                    alert("Please fill all required fields.");
+                }
+            }
+
+            form.addEventListener("submit", validateForm);
+        });
+
+        // Function to trigger file input when upload button is clicked
+        function uploadFile(inputId) {
+            document.getElementById(inputId).click();
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <label for="fileInput">
+                <div class="profile-photo">
+                    <img id="profileImg" src="" alt="Profile"  style="display: none;">
+                    <span id="uploadText">Upload Photo</span> 
+                </div>
+            </label>
+            <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
+            <ul>
+                <li onclick="showSection('profileSection')">My Profile</li>
+                <li onclick="showSection('vehicleSection')">Vehicle Details</li>
+            </ul>
+        </aside>
+        <div id="profileSection" class="content">
+    <h2>My Profile</h2>
+    <div class="profile-box">
+        <label>Your Name <span style="color: red;">*</span></label>
+        <input type="text" id="fullName" placeholder="Your Name" required disabled>
+
+        <label>Mobile Number <span style="color: red;">*</span></label>
+        <input type="text" id="mobileNo" placeholder="Mobile Number" required disabled>
+
+        <label>Email ID <span style="color: red;">*</span></label>
+        <input type="email" id="email" placeholder="Email ID" required disabled>
+
+        <label>Driving License Number <span style="color: red;">*</span></label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+    	<input type="text" id="drivingLicenceNo" placeholder="Number" required disabled>
+    	<button type="button" onclick="viewDrivingLicensePDF()">View PDF</button>
+		</div>
+	
+        <label>Vehicle Number <span style="color: red;">*</span></label>
+        <input type="text" id="vehicleRegistrationNumber" placeholder="Number" required disabled>
+
+        <label>Alternate Mobile Number</label>
+        <input type="text" id="alternateMobileNo" placeholder="Number" disabled>
+
+        <div class="buttons">
+            <button class="cancel-btn" onclick="enableEditing()">Edit</button>
+            <button class="save-btn" onclick="saveProfile()">Save</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    fetch('/api/operators/profile', {
+        method: 'GET',
+        credentials: 'include' // This is crucial for session persistence
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch operator profile');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Profile data:', data);
+        document.getElementById("fullName").value = data.fullName || '';
+        document.getElementById("mobileNo").value = data.mobileNo || '';
+        document.getElementById("email").value = data.email || '';
+        document.getElementById("drivingLicenceNo").value = data.drivinglicenceNo || '';
+        document.getElementById("vehicleRegistrationNumber").value = data.vehicleRegistrationNumber || '';
+        document.getElementById("alternateMobileNo").value = data.alternateMobileNo || '';
+        
+        document.getElementById("fixedVehicleNumber").value = data.vehicleRegistrationNumber || '';
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+
+function enableEditing() {
+    document.querySelectorAll('#profileSection input').forEach(input => input.disabled = false);
+}
+
+function saveProfile() {
+    const profileData = {
+        fullName: document.getElementById('fullName').value,
+        mobileNo: document.getElementById('mobileNo').value,
+        email: document.getElementById('email').value,
+        drivinglicenceNo: document.getElementById('drivingLicenceNo').value,
+        vehicleRegistrationNumber: document.getElementById('vehicleRegistrationNumber').value,
+        alternateMobileNo: document.getElementById('alternateMobileNo').value
+    };
+
+    fetch('/api/operators/profile', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(profileData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to update profile');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert('Profile updated successfully');
+        disableEditing();
+    })
+    .catch(error => console.error('Error updating profile:', error));
+}
+
+function disableEditing() {
+    document.querySelectorAll('#profileSection input').forEach(input => input.disabled = true);
+}
+
+</script>
+        
+        <div id="vehicleSection" class="content">
+            <h2>Vehicle Details</h2>
+            <div class="profile-box">
+                <label>Vehicle Number <span style="color: red;">*</span></label>
+        <input type="text" id="fixedVehicleNumber" placeholder="Vehicle Number" required disabled>
+
+                
+
+                <h2>Insurance Details</h2>
+                <label>From <span style="color: red;">*</span></label>
+                <input type="date" required>
+
+                <label>To <span style="color: red;">*</span></label>
+                <input type="date" required><br>
+
+                <label>Insurance Number <span style="color: red;">*</span></label>
+                <input type="number" placeholder="Insurance Number" required><br>
+
+                <label>Upload Insurance Document <span style="color: red;">*</span></label>
+                <input type="file" id="insuranceInput" required>
+                <button class="upload-btn" onclick="uploadFile('insuranceInput')">Upload</button>
+
+                <h2>Tax Details</h2>
+                <label>From <span style="color: red;">*</span></label>
+                <input type="date" required>
+
+                <label>To <span style="color: red;">*</span></label>
+                <input type="date" required><br>
+
+                <label>Upload Tax Document <span style="color: red;">*</span></label>
+                <input type="file" id="taxInput" required>
+                <button class="upload-btn" onclick="uploadFile('taxInput')">Upload</button>
+
+                <h2>Chassis Details</h2>
+                <label>Chassis Number <span style="color: red;">*</span></label>
+                <input type="number" placeholder="Chassis Number" required><br>
+
+
+                <h2>RC Details</h2>
+                <label>Upload RC Document <span style="color: red;">*</span></label>
+                <input type="file" id="rcInput" required>
+                <button class="upload-btn" onclick="uploadFile('rcInput')">Upload</button>
+
+                <!-- Buttons moved inside .profile-box -->
+                <div class="buttons">
+                    <button class="cancel-btn" onclick="enableEditing('vehicleSection')">Edit</button>
+					<button class="save-btn">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div>
+
+    </div>
+    
+    <script>
+   
+    function loadVehicleData(operatorId) {
+        fetch(`/vehicle/${operatorId}`)
+            .then(response => {
+                if (response.status === 204) {
+                    // No vehicle data found, show empty form
+                    document.getElementById('vehicleForm').style.display = 'block';
+                    document.getElementById('vehicleDetails').style.display = 'none';
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if (data) {
+                    // Show vehicle data
+                    document.getElementById('vehicleDetails').innerHTML = `
+                        <p>Chassis Number: ${data.chassisNumber}</p>
+                        <p>RC Document: <a href="${data.rcDocumentPath}" target="_blank">View</a></p>
+                    `;
+                    document.getElementById('vehicleDetails').style.display = 'block';
+                    document.getElementById('vehicleForm').style.display = 'none';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function saveVehicle() {
+        const vehicleData = {
+            operatorId: document.getElementById('operatorId').value,
+            chassisNumber: document.getElementById('chassisNumber').value,
+            rcDocumentPath: document.getElementById('rcDocumentPath').value
+        };
+
+        fetch('/vehicle/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(vehicleData)
+        })
+        .then(response => response.text())
+        .then(message => {
+            alert(message);
+            location.reload(); // Refresh to show saved data
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
+</body>
+
+</html>

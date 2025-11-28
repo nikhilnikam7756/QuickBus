@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGENT profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            cursor: pointer;
+        }
+
+        .sidebar ul li:hover {
+            background: #ddd;
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: none;
+        }
+
+        .profile-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-bottom: 1px solid #d6d4d4;
+        }
+
+        .profile-box input:disabled {
+            background: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        .gender-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin: 5px 0;
+        }
+
+        .gender-container input {
+            margin: 0 2px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+            margin-right: 10px;
+        }
+
+        .save-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-btn {
+            background: #28a745;
+            /* Green color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .upload-btn:hover {
+            background: #218838;
+            /* Darker green for hover effect */
+        }
+
+        .profile-box input:disabled {
+            background: #e9ecef;
+            cursor: default !important;
+        }
+    </style>
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('profileImg');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function enableEditing(sectionId) {
+            document.querySelectorAll(`#${sectionId} input`).forEach(input => {
+                input.disabled = false;
+            });
+        }
+
+        function disableEditing(sectionId) {
+            document.querySelectorAll(`#${sectionId} input`).forEach(input => {
+                input.disabled = true;
+            });
+        }
+
+        // Ensure all inputs in vehicleSection are initially disabled
+        document.addEventListener("DOMContentLoaded", function () {
+            disableEditing('vehicleSection');
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("vehicleForm");
+
+            function validateForm(event) {
+                const requiredFields = document.querySelectorAll("input[required]");
+                let isValid = true;
+
+                requiredFields.forEach((field) => {
+                    if (!field.value.trim()) {
+                        field.style.border = "2px solid red";
+                        isValid = false;
+                    } else {
+                        field.style.border = "";
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                    alert("Please fill all required fields.");
+                }
+            }
+
+            form.addEventListener("submit", validateForm);
+        });
+
+        // Function to trigger file input when upload button is clicked
+        function uploadFile(inputId) {
+            document.getElementById(inputId).click();
+        }
+
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <label for="fileInput">
+                <div class="profile-photo">
+                    <img id="profileImg" src="" alt="">
+                </div>
+            </label>
+            <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event)">
+            <ul>
+                <li onclick="showSection('profileSection')"> MY PROFILE</li>
+                <li onclick="showSection('vehicleSection')">AGENCY Details</li>
+                <li onclick="showSection('#')">ACCOUNTS Details</li>
+            </ul>
+        </aside>
+       <div id="profileSection" class="content">
+    <h2>My Profile</h2>
+    <div class="profile-box">
+        <label>Your Name <span style="color: red;">*</span></label>
+        <input id="fullName" type="text" placeholder="Your Name" required disabled>
+
+        <label>Mobile Number <span style="color: red;">*</span></label>
+        <input id="mobileNo" type="text" placeholder="Mobile Number" required disabled>
+
+        <label>Email ID <span style="color: red;">*</span></label>
+        <input id="email" type="email" placeholder="Email ID" required disabled>
+
+        <label>City <span style="color: red;">*</span></label>
+        <input id="city" type="text" placeholder="City" required disabled>
+
+        <label>Agency Name <span style="color: red;">*</span></label>
+        <input id="companyName" type="text" placeholder="Agency Name" required disabled>
+
+        <label>Aadharcard Number <span style="color: red;">*</span></label>
+        <input id="aadharNo" type="text" placeholder="Aadhar Number" required disabled>
+
+        <label>PAN Card Number <span style="color: red;">*</span></label>
+        <input id="panNo" type="text" placeholder="PAN Number" required disabled>
+
+        <label>Alternative Mobile Number</label>
+        <input id="alternateMobileNo" type="text" placeholder="Alternative Number" disabled>
+
+        <div class="buttons">
+            <button class="edit-btn" onclick="enableEditing()">Edit</button>
+            <button class="save-btn" onclick="saveProfile()">Save</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    fetch('/api/agents/profile', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch agent profile');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Profile data:', data);
+        document.getElementById("fullName").value = data.fullName || '';
+        document.getElementById("mobileNo").value = data.mobileNo || '';
+        document.getElementById("email").value = data.email || '';
+        document.getElementById("city").value = data.city || '';
+        document.getElementById("companyName").value = data.companyName || '';
+        document.getElementById("aadharNo").value = data.aadharNo || '';
+        document.getElementById("panNo").value = data.panNo || '';
+        document.getElementById("alternateMobileNo").value = data.alternateMobileNo || '';
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+function enableEditing() {
+    document.querySelectorAll('#profileSection input').forEach(input => input.disabled = false);
+}
+
+function saveProfile() {
+    const updatedData = {
+        fullName: document.getElementById("fullName").value,
+        mobileNo: document.getElementById("mobileNo").value,
+        email: document.getElementById("email").value,
+        city: document.getElementById("city").value,
+        companyName: document.getElementById("companyName").value,
+        aadharNo: document.getElementById("aadharNo").value,
+        panNo: document.getElementById("panNo").value,
+        alternateMobileNo: document.getElementById("alternateMobileNo").value
+    };
+
+    fetch('/api/agents/profile', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(updatedData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to save profile');
+        }
+        alert('Profile updated successfully');
+        document.querySelectorAll('#profileSection input').forEach(input => input.disabled = true);
+    })
+    .catch(error => console.error('Error:', error));
+}
+</script>    
+    
+<div id="agencySection" class="content">
+            <h2>Agency details</h2>
+            <div class="profile-box">
+                <label>Agency name <span style="color: red;">*</span></label>
+                <input type="text" placeholder="Agency Name" required><br>
+
+               
+
+                <label>Upload driving Document <span style="color: red;">*</span></label>
+                <input type="file" id="insuranceInput" required>
+                <button class="upload-btn" onclick="uploadFile('insuranceInput')">Upload</button>
+
+               <!-- Buttons moved inside .profile-box -->
+                <div class="buttons">
+                    <button class="cancel-btn" onclick="enableEditing('vehicleSection')">Edit</button>
+                    <button class="save-btn" onclick="disableEditing('vehicleSection')">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div>
+
+
+
+    </div>
+</body>
+
+</html>
