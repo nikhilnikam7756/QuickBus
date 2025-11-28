@@ -1,0 +1,161 @@
+body {
+    font-family: sans-serif;
+    background-image: url('multiple.jpg'); /* Correct syntax for background image */
+    background-size: cover; /* Makes the image cover the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image on the screen */
+    background-attachment: fixed; /* Keeps the background in place while scrolling */
+    margin: 0;
+    padding: 0;
+    display: flex; /* Enables flexbox layout */
+    justify-content: flex-end; /* Pushes the container and content to the right */
+    align-items: flex-start; /* Aligns the content at the top */
+    height: 100vh; /* Ensures the body takes the full viewport height */
+    position: relative;
+  }
+  
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 140%; /* Ensures the overlay covers the viewport */
+    background: rgba(46, 46, 46, 0.5); /* Adjust opacity and color as needed */
+    z-index: -1; /* Keeps it behind the content */
+  }
+  
+  .container {
+    width: 60%;
+    max-width: 400px;
+    margin: 50px; /* Adds spacing from the top and right */
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9); /* Adds a translucent white background */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Logo styling */
+  .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .logo-img {
+    max-width: 100px; /* Adjust this to the size you prefer */
+    height: auto;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  
+  .signup-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .signup-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .upload-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .upload-section input {
+    margin-right: 10px;
+    width: calc(100% - 130px);
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  
+  .upload-section button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  
+  .file-name {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #555;
+    font-style: italic;
+  }
+  
+  .terms-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .terms-section label {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  
+  .terms-section input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: 15px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .login-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    margin-left: 10px;
+  }
+  
+  .login-btn:hover {
+    background-color: #5a6268;
+  }

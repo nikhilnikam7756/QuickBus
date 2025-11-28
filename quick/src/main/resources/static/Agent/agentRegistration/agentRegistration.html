@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="agentRegistration.css">
+    <title>Agent Registration</title>
+</head>
+<body>
+    <div class="container">
+         <!-- Logo Section -->
+         <div class="logo">
+            <img src="chat.png" alt="Chat Logo" class="logo-img">
+        </div>
+        <h2>Agent Registration</h2>
+
+    		<form id="agentRegistrationForm" method="POST" action="http://localhost:8082/api/agents/register" enctype="multipart/form-data">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" placeholder="Enter Full Name" required>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Enter Email Address" required>
+            <span class="error-message" id="emailError"></span>
+
+            <label for="mobileNo">Mobile No:</label>
+            <input type="text" id="mobileNo" name="mobileNo" placeholder="Enter Mobile No" required>
+            <span class="error-message" id="mobileError"></span>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="**" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="**" required>
+            <span class="error-message" id="passwordError"></span>
+
+            <label for="companyName">Company Name:</label>
+            <input type="text" id="companyName" name="companyName" placeholder="Enter Company Name" required>
+
+            <label for="city">City:</label>
+            <select id="city" name="city" required>
+                <option value="" disabled selected>Select your city</option>
+                <option value="Pune">Pune</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Bangalore">Bangalore</option>
+            </select>
+
+            <label for="aadharNo">Aadhar No:</label>
+            <div class="upload-section">
+                <input type="text" id="aadharNo" name="aadharNo" placeholder="0000-0000-0000" required>
+                <button type="button" id="aadharUploadButton">Upload Aadharcard</button>
+                <input type="file" id="aadharFile" name="aadharFile" style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+                <span class="file-name" id="aadharFileName"></span>
+                <span class="error-message" id="aadharError"></span>
+            </div>
+
+            <label for="panNo">PAN No:</label>
+            <div class="upload-section">
+                <input type="text" id="panNo" name="panNo" placeholder="AAAAA0000A" required>
+                <button type="button" id="panUploadButton">Upload Pancard</button>
+                <input type="file" id="panFile" name="panFile" style="display: none;" accept=".pdf,.jpg,.jpeg,.png">
+                <span class="file-name" id="panFileName"></span>
+                <span class="error-message" id="panError"></span>
+            </div>
+
+            <div class="terms-section">
+                <input type="checkbox" id="termsAndConditions" name="termsAndConditions" required>
+                <label for="termsAndConditions">I accept all Terms & Conditions.</label>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="signup-btn">Sign Up</button>
+                <a href="../AgentLogin/agentlogin.html" class="login-btn">Log In</a> <!-- Link to login page -->
+            </div>
+        </form>
+    </div>
+
+   <script>
+   document.getElementById('agentRegistrationForm').addEventListener('submit', async function (event) {
+	    let valid = true;
+
+	    // Clear all error messages
+	    document.querySelectorAll('.error-message').forEach(msg => (msg.textContent = ''));
+
+	    // Email uniqueness check
+	    const email = document.getElementById('email').value;
+	    const isEmailUnique = await checkEmailUnique(email);
+	    if (!isEmailUnique) {
+	        document.getElementById('emailError').textContent = 'Email ID is already registered.';
+	        valid = false;
+	    }
+
+	    // Password and Confirm Password validation
+	    const password = document.getElementById('password').value;
+	    const confirmPassword = document.getElementById('confirmPassword').value;
+	    if (password !== confirmPassword) {
+	        document.getElementById('passwordError').textContent = 'Password and Confirm Password do not match.';
+	        valid = false;
+	    }
+
+	    // Check if Aadharcard is uploaded
+	    const aadharFileInput = document.getElementById('aadharFile');
+	    if (!aadharFileInput.files || aadharFileInput.files.length === 0) {
+	        document.getElementById('aadharError').textContent = 'Please upload your Aadharcard.';
+	        valid = false;
+	    }
+
+	    // Check if Pancard is uploaded
+	    const panFileInput = document.getElementById('panFile');
+	    if (!panFileInput.files || panFileInput.files.length === 0) {
+	        document.getElementById('panError').textContent = 'Please upload your Pancard.';
+	        valid = false;
+	    }
+
+	    // Prevent form submission if invalid
+	    if (!valid) {
+	        event.preventDefault();
+	        return;
+	    }
+	});
+
+	// Add event listeners for file upload buttons to trigger file input clicks
+	document.getElementById('aadharUploadButton').addEventListener('click', function () {
+	    document.getElementById('aadharFile').click();
+	});
+
+	document.getElementById('panUploadButton').addEventListener('click', function () {
+	    document.getElementById('panFile').click();
+	});
+
+	// Display file name after selecting a file
+	document.getElementById('aadharFile').addEventListener('change', function () {
+	    const fileName = this.files[0]?.name || 'No file selected';
+	    document.getElementById('aadharFileName').textContent = fileName;
+	});
+
+	document.getElementById('panFile').addEventListener('change', function () {
+	    const fileName = this.files[0]?.name || 'No file selected';
+	    document.getElementById('panFileName').textContent = fileName;
+	});
+
+	// Simulated API for checking email uniqueness
+	async function checkEmailUnique(email) {
+	    const existingEmails = ['test@example.com', 'user@example.com']; // Example data
+	    return !existingEmails.includes(email);
+	}
+	
+	
+	document.getElementById('aadharNo').addEventListener('input', function (event) {
+	    let input = this.value.replace(/-/g, ''); // Remove all existing hyphens
+	    if (isNaN(input)) {
+	        this.value = input.slice(0, -1); // Prevent non-numeric input
+	        return;
+	    }
+
+	    // Add hyphens after every 4 digits
+	    let formatted = input.match(/.{1,4}/g)?.join('-') || '';
+	    this.value = formatted;
+	});
+
+
+</script>
+   
+    
+      
+</body>
+</html>

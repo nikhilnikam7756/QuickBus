@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .sidebar, .header {
+            background-color: #4f1d94;
+            color: white;
+        }
+
+        .header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .sidebar {
+            height: 100vh;
+            padding-top: 20px;
+            position: fixed;
+            width: 200px;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #495057;
+            border-radius: 5px;
+        }
+
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .stat-card {
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .card-2 { background-color: #e74c3c; }
+        .card-4 { background-color: #f39c12; }
+        .card-5 { background-color: #9b59b6; }
+        .card-7 { background-color: #34495e; }
+        .card-8 { background-color: #d35400; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+        <!-- Left side -->
+        <div class="ms-3">
+            <h5>Operator, <span id="operatorName">John Doe</span></h5>
+        </div>
+            <div>
+            <button class="btn btn-warning" onclick="showAddBus()">Add Bus</button>
+            <a href="../operatorProfile/profile.html"  target="_self"> 
+            <img src="bus-driver.png" alt="Profile"  class="profile-img ms-3">
+            </a>
+        </div>
+
+
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 d-md-block sidebar">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" data-page="dashboard">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" data-page="bookings">Bookings</a></li>
+                <li class="nav-item"><a class="nav-link" data-page="operator-settings">Operator Settings</a></li>
+                <li class="nav-item"><a class="nav-link" data-page="customer-feedback">Customer Feedback</a></li>
+                <li class="nav-item"><a class="nav-link" data-page="routes">Routes</a></li>
+            </ul>
+        </nav>
+
+        <main class="col-md-10 content">
+            <h2 id="page-title">Dashboard</h2>
+            <div id="dashboard-cards">
+                <div class="row">
+                    <div class="col-md-4" onclick="loadContent('bookings')">
+                        <div class="card stat-card card-2">
+                            <div class="card-body">
+                                <h5>Bookings</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" onclick="loadContent('operator-settings')">
+                        <div class="card stat-card card-4">
+                            <div class="card-body">
+                                <h5>Operator Settings</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" onclick="loadContent('customer-feedback')">
+                        <div class="card stat-card card-5">
+                            <div class="card-body">
+                                <h5>Customer Feedback</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4" onclick="loadContent('routes')">
+                        <div class="card stat-card card-7">
+                            <div class="card-body">
+                                <h5>Routes</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="content-area"></div>
+        </main>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchOperatorName();
+    });
+
+    function fetchOperatorName() {
+        fetch("/api/operators/name")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Not logged in");
+                }
+                return response.text();
+            })
+            
+            .then(name => {
+                document.getElementById('operatorName').textContent = name;
+            })
+            .catch(error => console.error("Error fetching operator name:", error));
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".nav-link").click(function () {
+            let page = $(this).data("page");
+            loadContent(page);
+        });
+    });
+
+    function loadContent(page) {
+        let content = "";
+        if (page === "dashboard") {
+            $("#dashboard-cards").show();
+            $("#content-area").html("");
+            return;
+        } else {
+            $("#dashboard-cards").hide();
+            content = `<h2>${page.replace('-', ' ')}</h2><p>Content for ${page} goes here.</p>`;
+        }
+        $("#content-area").html(content);
+    }
+</script>
+</body>
+</html>

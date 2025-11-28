@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Bus Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #1a0340;
+            padding-top: 20px;
+            color: white;
+        }
+        .sidebar a {
+            padding: 10px 20px;
+            text-decoration: none;
+            display: block;
+            color: white;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #190448;
+        }
+        .header {
+    background-color: #230444;
+    color: white;
+    padding: 15px;
+    position: relative;
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 15px;
+}
+.btn-light {
+    margin-right: 20px; /* Adds space between the two buttons */
+}
+
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .dashboard-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .dashboard-card:hover {
+            transform: scale(1.05);
+        }
+        .details-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+   <!-- Sidebar -->
+   <div class="sidebar">
+    <h4 class="text-center">Agent, XYZ</h4>
+    <hr>
+    <a href="#" onclick="showDetails('Profile')">Profile</a>
+    <a href="#" onclick="showDetails('Dashboard')">Dashboard</a>
+    <a href="#" onclick="showDetails('Customers')">Customers</a>
+    <a href="#" onclick="showDetails('Bookings')">Bookings</a>
+    <a href="#" onclick="showDetails('Buses')">Buses</a>
+    <a href="#" onclick="showDetails('Seats')">Seats</a>
+    <a href="#" onclick="showDetails('Operator')">Operator</a>
+    <a href="#" onclick="showDetails('Routes')">Routes</a>
+    <a href="#" onclick="showDetails('Reports')">Reports</a>
+</div>
+<!-- Header -->
+
+<div class="header">
+    <nav class="d-flex justify-content-between align-items-center">
+        <!-- Left side -->
+        <div class="ms-3">
+            <h5>Agent, <span id="agentName">John Doe</span></h5>
+        </div>
+
+        <!-- Right side -->
+        <div class="me-3 d-flex align-items-center">
+            <button class="btn btn-light me-3" onclick="window.location.href='../../operator/operatorRegistration/operatorRegistration.html'">
+    Add Operator
+</button>
+            
+            <button class="btn btn-warning " onclick="window.location.href='../../bus/addbus/addbusform.html'">
+            Add Bus</button>
+            <a href="../agentProfile/profile.html"  target="_self"> 
+            <img src="bus-driver.png" alt="Profile" class="profile-img ms-3">
+            </a>
+        </div>
+    </nav>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchAgentName();
+    });
+
+    function fetchAgentName() {
+        fetch("/api/agents/name")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Not logged in");
+                }
+                return response.text();
+            })
+            .then(name => {
+                document.getElementById('agentName').textContent = name;
+            })
+            .catch(error => console.error("Error fetching agent name:", error));
+    }
+</script>
+
+
+
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card dashboard-card bg-primary text-white" onclick="showDetails('Customers')">
+                    <div class="card-body text-center">
+                        <h5>Customers</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card dashboard-card bg-success text-white" onclick="showDetails('Bookings')">
+                    <div class="card-body text-center">
+                        <h5>Bookings</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card dashboard-card bg-info text-white" onclick="showDetails('Buses')">
+                    <div class="card-body text-center">
+                        <h5>Buses</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card dashboard-card bg-warning text-white" onclick="showDetails('Seats')">
+                    <div class="card-body text-center">
+                        <h5>Seats</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <div class="card dashboard-card bg-danger text-white" onclick="showDetails('Operator')">
+                    <div class="card-body text-center">
+                        <h5>Operator</h5>
+                         <p>Total Operators: <span id="totalOperators"></span></p>
+                         
+                    </div>
+                </div>
+            </div>
+            
+            
+
+            
+            
+            
+            <div class="col-md-3">
+                <div class="card dashboard-card bg-secondary text-white" onclick="showDetails('Routes')">
+                    <div class="card-body text-center">
+                        <h5>Routes</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card dashboard-card bg-dark text-white" onclick="showDetails('Payment')">
+                    <div class="card-body text-center">
+                        <h5>Payment</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section to Display Details -->
+        <div id="detailsContent" class="details-container"></div>
+    </div>
+
+    <script>
+    
+    // Function to fetch operator data from the backend
+  async function fetchOperatorData() {
+    try {
+        const response = await fetch('/api/operators/details', {
+            method: 'GET',
+            credentials: 'include' // Important: sends session cookies
+        });
+
+        const operators = await response.json();
+
+        document.getElementById("totalOperators").innerText = operators.length;
+
+        if (operators.length === 0) {
+            document.getElementById("detailsContent").innerHTML = "<p>No operators found.</p>";
+            return;
+        }
+
+        const rows = operators.map(op => `
+            <tr>
+                <td>${op.fullName}</td>
+                <td>${op.mobileNo}</td>
+                <td>${op.vehicleRegistrationNumber}</td>
+                <td>${op.drivinglicenceNo}</td>
+            </tr>
+        `).join('');
+
+        const table = `
+            <h3>Operator Details</h3>
+            <table class="table table-bordered">
+                <tr><th>Operator Name</th><th>Mobile Number</th><th>Vehicle Number</th><th>Licence Number</th></tr>
+                ${rows}
+            </table>
+        `;
+
+        document.getElementById("detailsContent").innerHTML = table;
+
+    } catch (error) {
+        console.error('Error fetching operators:', error);
+        document.getElementById("detailsContent").innerHTML = "<p>Failed to load operator details.</p>";
+    }
+}
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        function showDetails(section) {
+            let detailsContent = document.getElementById("detailsContent");
+            let content = "";
+
+            if (section === "Customers") {
+                content = `
+                    <h3>Customer Details</h3>
+                    <table class="table table-bordered">
+                        <tr><th>Name</th><th>Contact Number</th><th>Email</th><th>Booking History</th></tr>
+                        <tr><td>RAM</td><td>9876543210</td><td>ram22@example.com</td><td>3 Bookings</td></tr>
+                    </table>
+                `;
+            } else if (section === "Bookings") {
+                content = `
+                    <h3>Booking Details</h3>
+                    <table class="table table-bordered">
+                        <tr><th>Booking ID</th><th>Customer Name</th><th>Bus Details</th><th>Journey Date</th><th>Payment Status</th></tr>
+                        <tr><td>BK1023</td><td>Alice</td><td>Volvo AC</td><td>2025-02-10</td><td>Paid</td></tr>
+                    </table>
+                `;
+            } else if (section === "Buses") {
+                content = `
+                    <h3>Bus Details</h3>
+                    <table class="table table-bordered">
+                        <tr><th>Bus ID</th><th>Bus Name</th><th>Type</th><th>Seats</th><th>Operator</th></tr>
+                        <tr><td>BUS1001</td><td>Red Express</td><td>AC</td><td>45</td><td>XYZ Travels</td></tr>
+                    </table>
+                `;
+            } else if (section === "Seats") {
+                content = `
+                    <h3>Seat Availability</h3>
+                    <table class="table table-bordered">
+                        <tr><th>Bus ID</th><th>Available Seats</th><th>Total Seats</th><th>Booked Seats</th></tr>
+                        <tr><td>BUS1001</td><td>20</td><td>45</td><td>25</td></tr>
+                    </table>
+                `;
+                
+                // Function called when the "Operator" card is clicked
+            }else if (section === "Operator") {
+                    fetchOperatorData();
+               
+            } else if (section === "Routes") {
+                content = `
+                    <h3>Routes Details</h3>
+                    <table class="table table-bordered">
+                        <tr><th>Route ID</th><th>Route Name</th><th>Start Location</th><th>End Location</th><th>Distance</th></tr>
+                        <tr><td>R001</td><td>Route 1</td><td>City A</td><td>City B</td><td>200 km</td></tr>
+                    </table>
+                `;   
+            } else if (section === "Payment") {
+                content = `
+                    <h3>Payment Details</h3>
+                    <table class="table table-bordered">
+                        <tr><th>Payment ID</th><th>Booking ID</th><th>Customer Name</th><th>Amount Paid</th><th>Payment Status</th></tr>
+                        <tr><td>PAY5678</td><td>BK1023</td><td>Alice</td><td>₹1200</td><td>Paid</td></tr>
+                    </table>
+                `;
+            } else if (section === "Reports") {
+                content = `
+                    <h3>Reports</h3>
+                    <p>Overview of performance and analytics.</p>
+                    <p>Analysis:</p>
+                    <ul>
+                        <li>Customer growth has increased by 15%.</li>
+                        <li>Bookings have shown a steady rise in the last quarter.</li>
+                    </ul>
+                `;
+            }
+
+            detailsContent.innerHTML = content;
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transportation Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://i.pinimg.com/originals/fc/cd/8d/fccd8dc7f22219a4b3e9bdfab62a9751.jpg');
+            display: flex;  
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            width: 450px;
+            border-radius: 8px;
+            min-height: 600px; /* Increased height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        select, button, input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #363fc1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 12px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #303b86;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .half {
+            width: 48%;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="bookingForm">
+        <h2>Transportation Booking Form</h2>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <div class="row">
+            <div class="half">
+                <label for="from_location">From:</label>
+                <select id="from_location" name="from_location" onchange="updateLocations()">
+                    <option value="">Select</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Kolhapur">Kolhapur</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="text" id="from_other" class="hidden" placeholder="Enter City">
+            </div>
+
+            <div class="half">
+                <label for="to_location">To:</label>
+                <select id="to_location" name="to_location" onchange="updateLocations()">
+                    <option value="">Select</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Kolkata">Kolkata</option>
+                    <option value="Chennai">Chennai</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Kolhapur">Kolhapur</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="text" id="to_other" class="hidden" placeholder="Enter City">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="half">
+                <label for="pickup">Pick-Up Location:</label>
+                <select id="pickup" name="pickup" onchange="toggleOther('pickup')">
+                    <option value="">Select Pick-Up</option>
+                </select>
+                <input type="text" id="pickup_other" class="hidden" placeholder="Enter Pick-Up Location">
+            </div>
+            <div class="half">
+                <label for="pickup_time">Pick-Up Time:</label>
+                <input type="time" id="pickup_time" name="pickup_time">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="half">
+                <label for="drop">Drop-Off Location:</label>
+                <select id="drop" name="drop" onchange="toggleOther('drop')">
+                    <option value="">Select Drop-Off</option>
+                </select>
+                <input type="text" id="drop_other" class="hidden" placeholder="Enter Drop-Off Location">
+            </div>
+            <div class="half">
+                <label for="drop_time">Drop-Off Time:</label>
+                <input type="time" id="drop_time" name="drop_time">
+            </div>
+        </div>
+
+        <button type="button" onclick="submitForm()">View Seats</button>
+    </form>
+
+    <script>
+        const locations = {
+            "Delhi": ["Connaught Place", "Kashmere Gate", "Saket", "Other"],
+            "Mumbai": ["Dadar", "Bandra", "Andheri", "Aroli", "Dombivali", "Other"],
+            "Bangalore": ["Majestic", "Whitefield", "Electronic City", "Other"],
+            "Kolkata": ["Howrah", "Park Street", "Salt Lake", "Other"],
+            "Chennai": ["Koyambedu", "Tambaram", "Guindy", "Other"],
+            "Pune": ["Shivaji Nagar","Katraj", "Wakad", "Hinjewadi", "Swargate", "Other"],
+            "Kolhapur": ["Tavade Hotel", "Kavala Naka", "CBS Stand", "Shahupuri", "Shivaji Chowk", "other" ]
+        };
+
+        function updateLocations() {
+            let from = document.getElementById("from_location").value;
+            let to = document.getElementById("to_location").value;
+            let pickup = document.getElementById("pickup");
+            let drop = document.getElementById("drop");
+
+            pickup.innerHTML = '<option value="">Select Pick-Up</option>';
+            drop.innerHTML = '<option value="">Select Drop-Off</option>';
+
+            if (locations[from]) {
+                locations[from].forEach(loc => {
+                    let opt = document.createElement("option");
+                    opt.value = loc;
+                    opt.textContent = loc;
+                    pickup.appendChild(opt);
+                });
+            }
+
+            if (locations[to]) {
+                locations[to].forEach(loc => {
+                    let opt = document.createElement("option");
+                    opt.value = loc;
+                    opt.textContent = loc;
+                    drop.appendChild(opt);
+                });
+            }
+
+            document.getElementById("from_other").classList.toggle("hidden", from !== "Other");
+            document.getElementById("to_other").classList.toggle("hidden", to !== "Other");
+        }
+
+        function toggleOther(type) {
+            const selectElem = document.getElementById(type);
+            const otherInput = document.getElementById(`${type}_other`);
+            otherInput.classList.toggle("hidden", selectElem.value !== "Other");
+        }
+
+        function submitForm() {
+            const form = document.getElementById("bookingForm");
+            const formData = new FormData(form);
+            const queryString = new URLSearchParams(formData).toString();
+            window.location.href = `addbusseat.html?${queryString}`;
+        }
+    </script>
+</body>
+</html>
